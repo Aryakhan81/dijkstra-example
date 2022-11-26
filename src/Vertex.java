@@ -40,4 +40,10 @@ public class Vertex {
 		else return false;
 		
 	}
+	
+	@Override
+	public String toString() {
+		if(this.name == null) return super.toString();
+		else return this.name;
+	}
 }

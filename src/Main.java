@@ -51,9 +51,19 @@ public class Main {
 		Graph g = new Graph(vertices, edges);
 		int shortest_path = dijkstra(g, v3, v5);
 		System.out.println(shortest_path);
+		System.out.println(prim(g, v1));
 	}
 	
-	public static int dijkstra(Graph g, Vertex start, Vertex end) {
+	/**Dijkstra's algorithm to find the shortest path in a weighted graph
+	 * 
+	 * @param g the graph in which to find the shortest path
+	 * @param start the vertex in the graph to start at
+	 * @param end the vertex to end at
+	 * @return the length of the shortest path
+	 */
+	public static int dijkstra(Graph graph, Vertex start, Vertex end) {
+		//Copy in a new graph to not damage the old one
+		Graph g = new Graph(graph);
 		//Bad argument check
 		if(g == null || !g.contains(start) || !g.contains(end)) return -1;
 		
@@ -88,5 +98,53 @@ public class Main {
 			//Remove the current vertex from the vertices left to visit
 			g.remove(minLabel);
 		}
+	}
+	
+	/**
+	 * Prim's algorithm to find the minimal spanning tree of a graph
+	 * <br/>
+	 * Note: this algorithm will find a possible MST, as it does not consider any ordering within the vertex set
+	 * @param g the graph of which to find the minimal spanning tree
+	 * @param start the vertex at which to start
+	 * @return the minimal spanning tree of g
+	 */
+	public static Graph prim(Graph g, Vertex start) {
+		//Bad argument check
+		if(g == null || !g.contains(start)) return null;
+		
+		//Create the variable to hold the minimal spanning tree
+		Graph mst = new Graph();
+		mst.addOnly(start);
+		
+		//Loop for each vertex in the vertex set of g
+		for(int i = 0; i < g.vertices.size(); i++) {
+			Edge minEdge = new Edge(start, start, Integer.MAX_VALUE);
+			
+			//Loop through every vertex that we have added so far to the mst
+			for(Vertex v : mst.vertices) {
+				
+				//Loop through each edge of each vertex in the mst
+				for(Edge e : v.edges) {
+					
+					//Make sure it is not repeated and if it's smaller than minEdge, set minEdge to it
+					if(mst.contains(e)) continue;
+					if(!((mst.contains(e.v1) && !mst.contains(e.v2)) || (mst.contains(e.v2) && !mst.contains(e.v1)))) continue;
+					if(e.weight < minEdge.weight) minEdge = e;
+				}	
+			}
+			
+			//Add only the smallest edge to the mst, and the vertex it connects to
+			mst.addOnly(minEdge);
+			if(!mst.contains(minEdge.v1)) mst.addOnly(minEdge.v1);
+			else if(!mst.contains(minEdge.v2)) mst.addOnly(minEdge.v2);
+		}
+		
+		//Clean the tree
+		mst.removeOnly(new Edge(start, start, Integer.MAX_VALUE));
+		for(Vertex v : mst.vertices) {
+			v.edges.removeIf(e -> !(mst.contains(e)));
+		}
+		
+		return mst;
 	}
 }

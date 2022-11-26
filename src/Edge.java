@@ -1,4 +1,3 @@
-
 public class Edge {
 	public Vertex v1;
 	public Vertex v2;
@@ -22,5 +21,10 @@ public class Edge {
 		Edge other = (Edge) o;
 		if(this.weight == other.weight && this.v1.equals(other.v1) && this.v2.equals(other.v2)) return true;
 		else return false;
+	}
+	
+	@Override
+	public String toString() {
+		return "(" + this.v1.toString() + ", " + this.v2.toString() + ")";
 	}
 }
