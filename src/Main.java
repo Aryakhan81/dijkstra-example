@@ -18,18 +18,21 @@ public class Main {
 		Edge e4 = new Edge(v1, v4, 1);
 		Edge e5 = new Edge(v4, v5, 2);
 		Edge e6 = new Edge(v4, v6, 3);
+		Edge e7 = new Edge(v2, v5, 1);
 		
 		v1.edges.add(e1);
 		v1.edges.add(e3);
 		v1.edges.add(e4);
 		v2.edges.add(e1);
 		v2.edges.add(e2);
+		v2.edges.add(e7);
 		v3.edges.add(e2);
 		v3.edges.add(e3);
 		v4.edges.add(e4);
 		v4.edges.add(e5);
 		v4.edges.add(e6);
 		v5.edges.add(e5);
+		v5.edges.add(e7);
 		v6.edges.add(e6);
 		
 		HashSet<Vertex> vertices = new HashSet<>();
@@ -47,6 +50,7 @@ public class Main {
 		edges.add(e4);
 		edges.add(e5);
 		edges.add(e6);
+		edges.add(e7);
 		
 		Graph g = new Graph(vertices, edges);
 		int shortest_path = dijkstra(g, v3, v5);
